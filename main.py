@@ -31,9 +31,9 @@ def run_pipeline(input_path: str, output_csv_path: str, output_db_path: str, rep
     authors = extract.get_unique_valid_authors(raw_authors)
     logging.info("Loaded %s unique authors", len(authors))
 
-    quality_table = quality.get_input_table_quality(raw_authors, authors)
-    load.write_csv(quality_table, Path(f"{reports_path}/quality_table_input.csv"))
-    logger.info("Input quality summary: %s", {q["Metric"]: q["Value"] for q in quality_table})
+    input_table_quality = quality.input_table_rules(raw_authors, authors)
+    load.write_csv(input_table_quality, Path(f"{reports_path}/quality_table_input.csv"))
+    logger.info("Input quality summary: %s", {q["Metric"]: q["Value"] for q in input_table_quality})
     logger.info("CSV generated: input table quality summary")
 
     openlibrary = OpenLibraryClient()
@@ -42,20 +42,18 @@ def run_pipeline(input_path: str, output_csv_path: str, output_db_path: str, rep
 
     load.write_csv(rows, Path(output_csv_path))
     logging.info("CSV generated: %s", output_csv_path)
-
     load.write_sqlite_db(rows, Path(output_db_path))
     logging.info("SQLite DB generated: %s", output_db_path)
-
     quality.validate_output_files(output_csv_path=output_csv_path, output_db_path=output_db_path)
-    output_quality_summary = quality.get_output_quality_summary(rows)
-    logger.info("Output quality summary: %s", output_quality_summary)
 
-    quality_table = quality.get_output_table_quality_summary(rows)
-    load.write_csv(quality_table, Path(f"{reports_path}/quality_table_output.csv"))
+    output_table_quality = quality.output_table_rules(rows)
+    load.write_csv(output_table_quality, Path(f"{reports_path}/quality_table_output.csv"))
+    logger.info("Output quality summary: %s", [{q["match_category"]: q["percentage"]} for q in output_table_quality])
     logger.info("CSV generated table quality summary")
 
-    quality_columns = quality.get_columns_quality_summary(rows=rows)
-    load.write_csv(quality_columns, Path(f"{reports_path}/quality_columns.csv"))
+    output_columns_quality = quality.output_columns_rules(rows=rows)
+    load.write_csv(output_columns_quality, Path(f"{reports_path}/quality_columns.csv"))
+    logger.info("Output quality summary: %s", {q["column"]: q["pass_rate"] for q in output_columns_quality})
     logger.info("CSV generated columns quality summary")
 
     logger.info("Pipeline finished successfully")

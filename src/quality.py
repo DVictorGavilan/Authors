@@ -142,9 +142,9 @@ def count_enriched_authors(rows: list[dict]) -> int:
 
 def count_missing_birth_date(rows: list[dict]) -> int:
     """
-    Count enriched rows without a birth date.
+    Count enriched rows without a birthdate.
     :param rows: List of enriched author rows.
-    :return: Number of enriched rows missing a birth date.
+    :return: Number of enriched rows missing a birthdate.
     """
     return sum(
         1
@@ -182,22 +182,6 @@ def count_missing_bio(rows: list[dict]) -> int:
     )
 
 
-def get_output_quality_summary(rows: list[dict]) -> dict:
-    """
-    Build a quality summary for the enriched output rows.
-    :param rows: List of enriched author rows.
-    :return: Dictionary containing output quality metrics.
-    """
-    return {
-        "output_total_rows": len(rows),
-        "output_invalid_confidence_levels": count_invalid_confidence_levels(rows),
-        "output_enriched_authors": count_enriched_authors(rows),
-        "output_birth_date_missing": count_missing_birth_date(rows),
-        "output_death_date_missing": count_missing_death_date(rows),
-        "output_bio_missing": count_missing_bio(rows),
-    }
-
-
 def format_pass_rate(passed: int, total: int) -> str:
     """
     Format a pass rate as a percentage string.
@@ -211,7 +195,7 @@ def format_pass_rate(passed: int, total: int) -> str:
     return f"{(passed / total) * 100:.1f}%"
 
 
-def get_input_table_quality(raw_authors: list[str], processed_authors: list[str]) -> list[dict]:
+def input_table_rules(raw_authors: list[str], processed_authors: list[str]) -> list[dict]:
     """
     Build a table-friendly quality summary for the input data.
     :param raw_authors: List of raw author names from the input file.
@@ -238,7 +222,7 @@ def get_input_table_quality(raw_authors: list[str], processed_authors: list[str]
     ]
 
 
-def get_output_table_quality_summary(rows: list[dict]) -> list[dict]:
+def output_table_rules(rows: list[dict]) -> list[dict]:
     """
     Build a table-friendly summary of output rows by confidence level.
     :param rows: List of enriched author rows.
@@ -263,7 +247,7 @@ def get_output_table_quality_summary(rows: list[dict]) -> list[dict]:
     ]
 
 
-def get_columns_quality_summary(rows: list[dict]) -> list[dict]:
+def output_columns_rules(rows: list[dict]) -> list[dict]:
     """
     Build a table-friendly quality summary for selected output columns.
     :param rows: List of enriched author rows.
@@ -301,5 +285,5 @@ def get_columns_quality_summary(rows: list[dict]) -> list[dict]:
             "failed": missing_bio,
             "pass_rate": format_pass_rate(enriched_authors - missing_bio, enriched_authors),
             "severity": "No Critical"
-        },
+        }
     ]
