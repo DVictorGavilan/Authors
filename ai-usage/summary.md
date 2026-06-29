@@ -38,6 +38,9 @@ Las reglas de calidad se dividieron conceptualmente entre reglas críticas y reg
 
 Se usó de apoyo para añadir tests unitarios simples con `pytest` y `assertpy`, separados por módulo, para ganar confianza en las piezas principales del pipeline sin sobredimensionar la prueba.
 
+### CI/CD
+
+Se usó de apoyo para añadir un workflow básico de GitHub Actions para ejecutar automáticamente los tests unitarios y validar la cobertura mínima del proyecto.
 
 ### Documentación
 
