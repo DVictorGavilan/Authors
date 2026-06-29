@@ -1,6 +1,6 @@
 # Base de Datos de Autores
 
-Pipeline ETL ligero para construir una base de datos enriquecida de autores a partir de un fichero CSV semilla.
+Pipeline ETL para construir una base de datos enriquecida de autores a partir de un fichero CSV semilla.
 
 El proyecto parte de una lista de nombres de autores, busca candidatos en Open Library, selecciona el match más probable, enriquece solo los casos con suficiente confianza y genera una salida reproducible en CSV y SQLite.
 
