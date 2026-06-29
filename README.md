@@ -4,7 +4,7 @@ Pipeline ETL ligero para construir una base de datos enriquecida de autores a pa
 
 El proyecto parte de una lista de nombres de autores, busca candidatos en Open Library, selecciona el match más probable, enriquece solo los casos con suficiente confianza y genera una salida reproducible en CSV y SQLite.
 
-For any bugs or questions, please contact [Dani Gavilán](mailto:danigavipedro96@gmail.com).
+Para cualquier duda o bug por favor contacto con: [Dani Gavilán](mailto:danigavipedro96@gmail.com).
 
 ---
 
