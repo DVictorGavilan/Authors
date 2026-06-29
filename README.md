@@ -91,7 +91,7 @@ El proyecto incluye tests unitarios sobre las distintas funciones desarrolladas
 python -m pytest --cov=src --cov-fail-under=95 -q
 ```
 
-### CI/C Workflow
+### CI/CD Workflow
 
 El repositorio incluye un workflow básico de integración continua con GitHub Actions en:
 
