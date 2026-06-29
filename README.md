@@ -292,7 +292,7 @@ El pipeline clasifica cada match en uno de estos niveles:
 | Nivel               | Condición                                  | Significado                                                                               |
 |---------------------|--------------------------------------------|-------------------------------------------------------------------------------------------|
 | `not_found`         | `candidate_count == 0`                     | No se encontraron candidatos en Open Library                                              |
-| `ambiguous`         | `candidate_count > 1` y `score_gap < 0.05` | Hay varios candidatos demasiado cercanos, por lo que el match no es suficientemente claro |
+| `ambiguous`         | `final_score >= 0.90` y `score_gap < 0.05` | Hay varios candidatos demasiado cercanos, por lo que el match no es suficientemente claro |
 | `high_confidence`   | `final_score >= 0.90` y `score_gap > 0.05` | Match suficientemente fiable para enriquecer                                              |
 | `medium_confidence` | `0.80 <= final_score < 0.90`               | Match razonable, pero no enriquecido en esta versión                                      |
 | `low_confidence`    | `final_score < 0.80`                       | Match débil                                                                               |
