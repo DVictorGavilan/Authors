@@ -1,0 +1,9 @@
+{
+  "paths": {
+    "input_csv": "data/input/authors_seed.csv",
+    "output_csv": "data/output/authors_enriched.csv",
+    "output_db": "data/output/authors_enriched.db",
+    "reports": "data/reports",
+    "log_config": "config/log_configuration.json"
+  }
+}

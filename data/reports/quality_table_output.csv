@@ -1,0 +1,6 @@
+match_category,records,percentage
+high_confidence,7,43.8%
+medium_confidence,0,0.0%
+low_confidence,0,0.0%
+ambiguous,6,37.5%
+not_found,3,18.8%

@@ -1,0 +1,5 @@
+Metric,Value
+Input rows,20
+Empty author names,1
+Duplicated normalized authors,3
+Unique valid authors processed,16

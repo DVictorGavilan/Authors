@@ -1,0 +1,4 @@
+column,quality_rule,applies_to,passed,failed,pass_rate,severity
+birth_date,Not missing,Output file,5,2,71.4%,No Critical
+death_date,Not missing,Output file,3,4,42.9%,No Critical
+bio,Not missing,Output file,4,3,57.1%,No Critical
