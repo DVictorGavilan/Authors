@@ -50,43 +50,6 @@ def test_validate_output_files_passes_when_outputs_exist(tmp_path):
     quality.validate_output_files(output_csv_path, output_db_path)
 
 
-def test_get_output_quality_summary_counts_enrichment_quality():
-    rows = [
-        {
-            "confidence_level": "high_confidence",
-            "enrichment_status": "enriched",
-            "birth_date": "1775",
-            "death_date": "",
-            "bio": "Some bio",
-        },
-        {
-            "confidence_level": "invalid_tag",
-            "enrichment_status": "enriched",
-            "birth_date": "",
-            "death_date": "",
-            "bio": "",
-        },
-        {
-            "confidence_level": "ambiguous",
-            "enrichment_status": "skipped",
-            "birth_date": "",
-            "death_date": "",
-            "bio": "",
-        },
-    ]
-
-    summary = quality.get_output_quality_summary(rows)
-
-    assert_that(summary).is_equal_to({
-        "output_total_rows": 3,
-        "output_invalid_confidence_levels": 1,
-        "output_enriched_authors": 2,
-        "output_birth_date_missing": 1,
-        "output_death_date_missing": 2,
-        "output_bio_missing": 1,
-    })
-
-
 def test_assert_output_csv_exists_raises_when_missing(tmp_path):
     output_csv_path = tmp_path / "missing.csv"
 
@@ -113,36 +76,66 @@ def test_format_pass_rate_returns_na_when_total_is_zero():
     assert_that(pass_rate).is_equal_to("N/A")
 
 
-def test_get_output_table_quality_summary_counts_match_categories():
+def test_output_table_rules_includes_categories_with_zero_records():
     rows = [
         {"confidence_level": "high_confidence"},
-        {"confidence_level": "high_confidence"},
-        {"confidence_level": "ambiguous"},
-        {"confidence_level": "not_found"},
     ]
 
-    report = quality.get_output_table_quality_summary(rows)
+    report = quality.output_table_rules(rows)
 
     report_by_category = {
         row["match_category"]: row
         for row in report
     }
 
-    assert_that(report_by_category["high_confidence"]["records"]).is_equal_to(2)
-    assert_that(report_by_category["high_confidence"]["percentage"]).is_equal_to("50.0%")
-
-    assert_that(report_by_category["ambiguous"]["records"]).is_equal_to(1)
-    assert_that(report_by_category["ambiguous"]["percentage"]).is_equal_to("25.0%")
-
-    assert_that(report_by_category["not_found"]["records"]).is_equal_to(1)
-    assert_that(report_by_category["not_found"]["percentage"]).is_equal_to("25.0%")
+    assert_that(report_by_category["high_confidence"]["records"]).is_equal_to(1)
+    assert_that(report_by_category["ambiguous"]["records"]).is_equal_to(0)
+    assert_that(report_by_category["not_found"]["records"]).is_equal_to(0)
 
 
-def test_get_output_table_quality_summary_returns_na_percentages_when_no_rows():
-    report = quality.get_output_table_quality_summary([])
+def test_output_columns_rules_counts_missing_fields_for_enriched_rows_only():
+    rows = [
+        {
+            "enrichment_status": "enriched",
+            "birth_date": "1775",
+            "death_date": "1817",
+            "bio": "Some bio",
+        },
+        {
+            "enrichment_status": "enriched",
+            "birth_date": "",
+            "death_date": "",
+            "bio": "Some bio",
+        },
+        {
+            "enrichment_status": "enriched",
+            "birth_date": "1900",
+            "death_date": "",
+            "bio": "",
+        },
+        {
+            "enrichment_status": "skipped",
+            "birth_date": "",
+            "death_date": "",
+            "bio": "",
+        },
+    ]
 
-    assert_that(report).is_not_empty()
+    report = quality.output_columns_rules(rows)
 
-    for row in report:
-        assert_that(row["records"]).is_equal_to(0)
-        assert_that(row["percentage"]).is_equal_to("N/A")
+    report_by_column = {
+        row["column"]: row
+        for row in report
+    }
+
+    assert_that(report_by_column["birth_date"]["passed"]).is_equal_to(2)
+    assert_that(report_by_column["birth_date"]["failed"]).is_equal_to(1)
+    assert_that(report_by_column["birth_date"]["pass_rate"]).is_equal_to("66.7%")
+
+    assert_that(report_by_column["death_date"]["passed"]).is_equal_to(1)
+    assert_that(report_by_column["death_date"]["failed"]).is_equal_to(2)
+    assert_that(report_by_column["death_date"]["pass_rate"]).is_equal_to("33.3%")
+
+    assert_that(report_by_column["bio"]["passed"]).is_equal_to(2)
+    assert_that(report_by_column["bio"]["failed"]).is_equal_to(1)
+    assert_that(report_by_column["bio"]["pass_rate"]).is_equal_to("66.7%")
