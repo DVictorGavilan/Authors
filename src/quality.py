@@ -114,19 +114,6 @@ def count_duplicated_normalized_authors(author_names: list[str]) -> int:
     return len(normalized_names) - len(set(normalized_names))
 
 
-def get_input_quality_summary(author_names: list[str]) -> dict:
-    """
-    Build a quality summary for the input author names.
-    :param author_names: List of raw author names from the input file.
-    :return: Dictionary containing input quality metrics.
-    """
-    return {
-        "input_total_rows": len(author_names),
-        "input_empty_author_names": count_empty_author_names(author_names),
-        "input_duplicate_normalized_authors": count_duplicated_normalized_authors(author_names),
-    }
-
-
 def count_invalid_confidence_levels(rows: list[dict]) -> int:
     """
     Count rows with invalid confidence levels.
@@ -224,27 +211,25 @@ def format_pass_rate(passed: int, total: int) -> str:
     return f"{(passed / total) * 100:.1f}%"
 
 
-def get_input_table_quality_summary(raw_author_names: list[str], processed_authors: list[str]) -> list[dict]:
+def get_input_table_quality(raw_authors: list[str], processed_authors: list[str]) -> list[dict]:
     """
     Build a table-friendly quality summary for the input data.
-    :param raw_author_names: List of raw author names from the input file.
+    :param raw_authors: List of raw author names from the input file.
     :param processed_authors: List of unique valid authors processed.
     :return: List of dictionaries representing input quality metrics.
     """
-    input_quality_summary = get_input_quality_summary(raw_author_names)
-
     return [
         {
             "Metric": "Input rows",
-            "Value": input_quality_summary["input_total_rows"],
+            "Value": len(raw_authors),
         },
         {
             "Metric": "Empty author names",
-            "Value": input_quality_summary["input_empty_author_names"],
+            "Value":  count_empty_author_names(raw_authors),
         },
         {
             "Metric": "Duplicated normalized authors",
-            "Value": input_quality_summary["input_duplicate_normalized_authors"],
+            "Value": count_duplicated_normalized_authors(raw_authors),
         },
         {
             "Metric": "Unique valid authors processed",

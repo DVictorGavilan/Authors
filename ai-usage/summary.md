@@ -32,7 +32,7 @@ La decisión final fue enriquecer únicamente autores clasificados como `high_co
 
 Se decidió centralizar las reglas de calidad en un módulo propio `quality.py`, manteniendo el código simple y sin introducir herramientas como Great Expectations o Pandera.
 
-Las reglas de calidad se dividieron conceptualmente entre reglas críticas y reglas no críticas. También se decidió generar reportes tabulares en CSV dentro de `data/reporting/`.
+Las reglas de calidad se dividieron conceptualmente entre reglas críticas y reglas no críticas. También se decidió generar reportes tabulares en CSV dentro de `data/reports/`.
 
 ### Testing
 

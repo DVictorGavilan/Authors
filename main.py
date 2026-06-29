@@ -28,15 +28,13 @@ def run_pipeline(input_path: str, output_csv_path: str, output_db_path: str, rep
     logging.info("Validated input file: %s", input_path)
 
     raw_authors = extract.load_author_names(Path(input_path))
-    input_quality_summary = quality.get_input_quality_summary(raw_authors)
-    logger.info("Input quality summary: %s", input_quality_summary)
-
     authors = extract.get_unique_valid_authors(raw_authors)
     logging.info("Loaded %s unique authors", len(authors))
 
-    quality_table = quality.get_input_table_quality_summary(raw_authors, authors)
+    quality_table = quality.get_input_table_quality(raw_authors, authors)
     load.write_csv(quality_table, Path(f"{reports_path}/quality_table_input.csv"))
-    logger.info("CSV generated table quality summary")
+    logger.info("Input quality summary: %s", {q["Metric"]: q["Value"] for q in quality_table})
+    logger.info("CSV generated: input table quality summary")
 
     openlibrary = OpenLibraryClient()
 

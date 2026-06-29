@@ -50,23 +50,6 @@ def test_validate_output_files_passes_when_outputs_exist(tmp_path):
     quality.validate_output_files(output_csv_path, output_db_path)
 
 
-def test_get_input_quality_summary_counts_empty_and_duplicates():
-    authors = [
-        "Jane Austen",
-        " jane   austen ",
-        "",
-        "Gabriel García Márquez",
-    ]
-
-    summary = quality.get_input_quality_summary(authors)
-
-    assert_that(summary).is_equal_to({
-        "input_total_rows": 4,
-        "input_empty_author_names": 1,
-        "input_duplicate_normalized_authors": 1,
-    })
-
-
 def test_get_output_quality_summary_counts_enrichment_quality():
     rows = [
         {

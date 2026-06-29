@@ -10,7 +10,7 @@ For any bugs or questions, please contact [Dani Gavilán](mailto:danigavipedro96
 
 ## 🚀 Objetivo
 
-Dado un fichero `authors_seed.csv` con una columna `author_name`, el pipeline genera una base de datos enriquecida con información pública de autores. Las base de datos contiene la siguiente información:
+Dado un fichero `authors_seed.csv` con una columna `author_name`, el pipeline genera una base de datos enriquecida con información pública de autores. La base de datos contiene la siguiente información:
 
 
 El fichero de entrada debe llamarse, por defecto:
@@ -85,7 +85,7 @@ python main.py
 
 ### Ejecutar tests
 
-El proyecto incluye tests unitarios las distintas funciones codificadas
+El proyecto incluye tests unitarios sobre las distintas funciones desarrolladas
 
 ```bash
 python -m pytest --cov=src --cov-fail-under=95 -q
@@ -313,7 +313,7 @@ No se ha usado Great Expectations, Pandera u otra librería de calidad de datos 
 
 Si el proyecto creciera en volumen o criticidad, las siguientes mejoras serían razonables:
 
-1. Añadir cache local para búsquedas y detalles de autores.
+1. Añadir caché local para búsquedas y detalles de autores.
 2. Implementar retries con backoff para llamadas HTTP.
 3. Añadir rate limiting para ser respetuosos con la API pública.
 4. Guardar candidatos intermedios para auditoría.
